@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 240, 234, 214; /* egg-shell */
+  --background-end-rgb: 255, 255, 255; /* white */
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  min-height: 100vh;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-egg-yolk text-egg-primary hover:bg-yellow-400 font-semibold py-2 px-4 rounded-lg shadow transition duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-egg-primary text-white hover:bg-egg-secondary font-semibold py-2 px-4 rounded-lg shadow transition duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-md p-6 transition-all hover:shadow-lg;
+  }
+  
+  .input-field {
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-egg-yolk focus:ring focus:ring-egg-yolk focus:ring-opacity-50 py-2 px-4;
+  }
+}
