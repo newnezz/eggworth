@@ -69,7 +69,7 @@ const RichestList = ({ people, eggPrice = 0.25, limit = 6 }: RichestListProps) =
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto text-center p-8">
+      <div className="max-w-4xl mx-auto text-center p-4 sm:p-8">
         <p className="text-egg-primary">Loading billionaires data...</p>
       </div>
     );
@@ -77,7 +77,7 @@ const RichestList = ({ people, eggPrice = 0.25, limit = 6 }: RichestListProps) =
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto text-center p-8">
+      <div className="max-w-4xl mx-auto text-center p-4 sm:p-8">
         <p className="text-red-500">{error}</p>
         <p className="mt-4">Using sample data instead...</p>
       </div>
@@ -85,24 +85,24 @@ const RichestList = ({ people, eggPrice = 0.25, limit = 6 }: RichestListProps) =
   }
 
   return (
-    <div className="max-w-4xl mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
       {billionaires.map((person) => {
         const eggWorth = calculateEggWorth(person.netWorth);
         
         return (
           <div key={person.id} className="card">
             <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-bold text-lg">{person.name}</h3>
-                <p className="text-gray-500 text-sm">{person.company}</p>
+              <div className="overflow-hidden">
+                <h3 className="font-bold text-base sm:text-lg truncate pr-2">{person.name}</h3>
+                <p className="text-gray-500 text-xs sm:text-sm truncate">{person.company}</p>
               </div>
-              <div className="bg-egg-yolk rounded-full h-10 w-10 flex items-center justify-center font-bold">
+              <div className="bg-egg-yolk rounded-full h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0">
                 {person.rank}
               </div>
             </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-egg-primary">🥚 {formatEggWorth(eggWorth)}</p>
-              <p className="text-sm text-gray-600">${person.netWorth} Billion USD</p>
+            <div className="mt-3 sm:mt-4">
+              <p className="text-xl sm:text-2xl font-bold text-egg-primary">🥚 {formatEggWorth(eggWorth)}</p>
+              <p className="text-xs sm:text-sm text-gray-600">${person.netWorth} Billion USD</p>
               <p className="text-xs text-gray-500 mt-1">{person.country}</p>
             </div>
           </div>

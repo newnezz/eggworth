@@ -55,9 +55,9 @@ const EggCalculator = ({ defaultEggPrice = 0.25, onIncomeChange }: EggCalculator
   };
 
   return (
-    <div className="max-w-lg mx-auto card">
+    <div className="w-full max-w-lg mx-auto card p-4 sm:p-6">
       <form onSubmit={calculateEggWorth}>
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <label htmlFor="income" className="block text-sm font-medium text-gray-700 mb-1">
             Your Annual Income
           </label>
@@ -69,7 +69,7 @@ const EggCalculator = ({ defaultEggPrice = 0.25, onIncomeChange }: EggCalculator
               type="number"
               name="income"
               id="income"
-              className="input-field pl-7 pr-12"
+              className="input-field pl-7 pr-12 w-full py-2"
               placeholder="0.00"
               value={income}
               onChange={handleIncomeChange}
@@ -77,11 +77,12 @@ const EggCalculator = ({ defaultEggPrice = 0.25, onIncomeChange }: EggCalculator
               min="0"
               step="1"
               required
+              inputMode="numeric"
             />
           </div>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <label htmlFor="eggPrice" className="block text-sm font-medium text-gray-700 mb-1">
             Average Egg Price
           </label>
@@ -93,7 +94,7 @@ const EggCalculator = ({ defaultEggPrice = 0.25, onIncomeChange }: EggCalculator
               type="number"
               name="eggPrice"
               id="eggPrice"
-              className="input-field pl-7 pr-12"
+              className="input-field pl-7 pr-12 w-full py-2"
               placeholder="0.25"
               value={eggPrice}
               onChange={handleEggPriceChange}
@@ -101,20 +102,21 @@ const EggCalculator = ({ defaultEggPrice = 0.25, onIncomeChange }: EggCalculator
               min="0.01"
               required
               aria-describedby="price-currency"
+              inputMode="decimal"
             />
           </div>
-          <p className="mt-2 text-sm text-gray-500">Current average price of a single egg in the US</p>
+          <p className="mt-1 text-xs sm:text-sm text-gray-500">Current average price of a single egg in the US</p>
         </div>
 
-        <button type="submit" className="btn-primary w-full">
+        <button type="submit" className="btn-primary w-full py-2 sm:py-3 text-sm sm:text-base">
           Calculate
         </button>
       </form>
 
-      <div className={`mt-8 p-4 bg-egg-shell rounded-lg text-center ${hasCalculated ? 'opacity-100' : 'opacity-70'}`}>
-        <h3 className="text-xl font-semibold text-egg-primary mb-2">Your Annual Egg Worth</h3>
-        <p className="text-4xl font-bold text-egg-primary">🥚 {formatNumber(eggWorth)}</p>
-        <p className="text-sm text-gray-600 mt-2">
+      <div className={`mt-6 sm:mt-8 p-3 sm:p-4 bg-egg-shell rounded-lg text-center ${hasCalculated ? 'opacity-100' : 'opacity-70'}`}>
+        <h3 className="text-lg sm:text-xl font-semibold text-egg-primary mb-1 sm:mb-2">Your Annual Egg Worth</h3>
+        <p className="text-3xl sm:text-4xl font-bold text-egg-primary">🥚 {formatNumber(eggWorth)}</p>
+        <p className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2">
           {hasCalculated
             ? `You could buy ${formatNumber(eggWorth)} eggs with your annual income`
             : 'Enter your income and calculate to see your egg worth'}

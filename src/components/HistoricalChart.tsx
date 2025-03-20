@@ -11,7 +11,7 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Line } from 'react-chartjs-2';
 
@@ -39,6 +39,19 @@ const HistoricalChart = ({ income = 50000 }: HistoricalChartProps) => {
   const [historicalData, setHistoricalData] = useState<EggPriceData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  const chartRef = useRef<ChartJS<"line">>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchHistoricalPrices = async () => {
@@ -79,6 +92,8 @@ const HistoricalChart = ({ income = 50000 }: HistoricalChartProps) => {
     return Math.floor(income / price);
   };
 
+  const isMobile = windowWidth < 768;
+
   const chartData = {
     labels: historicalData.map(data => data.year),
     datasets: [
@@ -101,6 +116,7 @@ const HistoricalChart = ({ income = 50000 }: HistoricalChartProps) => {
 
   const chartOptions: ChartOptions<'line'> = {
     responsive: true,
+    maintainAspectRatio: false,
     interaction: {
       mode: 'index' as const,
       intersect: false,
@@ -108,7 +124,19 @@ const HistoricalChart = ({ income = 50000 }: HistoricalChartProps) => {
     plugins: {
       title: {
         display: true,
-        text: 'Historical Egg Prices & Purchasing Power',
+        text: isMobile ? 'Egg Prices & Purchasing Power' : 'Historical Egg Prices & Purchasing Power',
+        font: {
+          size: isMobile ? 14 : 16
+        }
+      },
+      legend: {
+        position: isMobile ? 'bottom' : 'top',
+        labels: {
+          boxWidth: isMobile ? 12 : 40,
+          font: {
+            size: isMobile ? 10 : 12
+          }
+        }
       },
       tooltip: {
         callbacks: {
@@ -128,14 +156,38 @@ const HistoricalChart = ({ income = 50000 }: HistoricalChartProps) => {
       }
     },
     scales: {
+      x: {
+        ticks: {
+          maxRotation: isMobile ? 45 : 0,
+          font: {
+            size: isMobile ? 10 : 12
+          },
+          // For mobile, show fewer labels to prevent overlap
+          callback: function(value, index, values) {
+            if (isMobile) {
+              // On mobile, only show every other label when there are many years
+              return historicalData.length > 6 && index % 2 !== 0 ? null : this.getLabelForValue(Number(value));
+            }
+            return this.getLabelForValue(Number(value));
+          }
+        }
+      },
       y: {
         type: 'linear' as const,
         display: true,
         position: 'left' as const,
         title: {
-          display: true,
+          display: !isMobile,
           text: 'Egg Price ($)',
+          font: {
+            size: 12
+          }
         },
+        ticks: {
+          font: {
+            size: isMobile ? 10 : 12
+          }
+        }
       },
       y1: {
         type: 'linear' as const,
@@ -145,35 +197,43 @@ const HistoricalChart = ({ income = 50000 }: HistoricalChartProps) => {
           drawOnChartArea: false,
         },
         title: {
-          display: true,
+          display: !isMobile,
           text: 'Number of Eggs',
+          font: {
+            size: 12
+          }
         },
+        ticks: {
+          font: {
+            size: isMobile ? 10 : 12
+          }
+        }
       },
     },
   };
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto card p-8 text-center">
+      <div className="max-w-4xl mx-auto card p-4 sm:p-8 text-center">
         <p>Loading historical egg price data...</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto card">
+    <div className="max-w-4xl mx-auto card p-3 sm:p-6">
       {error && (
         <div className="mb-4 p-2 bg-red-100 text-red-800 rounded text-sm">
           {error} (using sample data)
         </div>
       )}
-      <p className="text-center text-gray-600 mb-6">
+      <p className="text-center text-gray-600 mb-4 text-sm sm:text-base px-2">
         With your current income of ${new Intl.NumberFormat().format(income)}, here&apos;s how many eggs you could buy throughout history:
       </p>
-      <div className="h-80 w-full">
-        <Line options={chartOptions} data={chartData} />
+      <div className="h-[250px] sm:h-[300px] md:h-[400px] w-full px-1">
+        <Line ref={chartRef} options={chartOptions} data={chartData} />
       </div>
-      <div className="mt-6 text-sm text-gray-500">
+      <div className="mt-4 text-xs sm:text-sm text-gray-500 px-2">
         <p>* Egg prices are approximate historical averages in the United States</p>
       </div>
     </div>

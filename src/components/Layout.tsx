@@ -1,23 +1,34 @@
 'use client';
 
+import { FiMenu, FiX } from 'react-icons/fi';
+
 import Link from 'next/link';
+import { useState } from 'react';
 
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 const Layout = ({ children }: LayoutProps) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar */}
-      <nav className="bg-egg-shell px-4 py-4 shadow-sm">
+      <nav className="bg-egg-shell px-4 py-4 shadow-sm relative z-20">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center">
             <Link href="/" className="text-2xl font-bold text-egg-primary">
               🥚 EggWorth
             </Link>
           </div>
-          <div className="flex space-x-4">
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-6">
             <Link href="/" className="text-egg-primary hover:text-egg-yolk">
               Home
             </Link>
@@ -28,7 +39,45 @@ const Layout = ({ children }: LayoutProps) => {
               About
             </Link>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden text-egg-primary focus:outline-none"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-egg-shell shadow-md py-2 px-4 z-10">
+            <div className="flex flex-col space-y-3">
+              <Link 
+                href="/" 
+                className="text-egg-primary hover:text-egg-yolk py-2 border-b border-gray-100"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link 
+                href="/history" 
+                className="text-egg-primary hover:text-egg-yolk py-2 border-b border-gray-100"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Historical Data
+              </Link>
+              <Link 
+                href="/about" 
+                className="text-egg-primary hover:text-egg-yolk py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Main Content */}
