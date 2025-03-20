@@ -1,10 +1,17 @@
 'use client';
 
+import Head from 'next/head';
 import Layout from '@/components/Layout';
 
 export default function AboutPage() {
   return (
     <Layout>
+      <Head>
+        <title>About EggWorth</title>
+        <meta name="description" content="Learn more about EggWorth, the app that converts money into eggs." />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8216684138418325"
+     crossOrigin="anonymous"></script>
+      </Head>
       <div className="container-responsive py-8 sm:py-12">
         <h1 className="heading-1 text-center text-egg-primary mb-6 sm:mb-8">About EggWorth</h1>
         
