@@ -4,7 +4,6 @@ import EggCalculator from '@/components/EggCalculator';
 import HistoricalChart from '@/components/HistoricalChart';
 import Layout from '@/components/Layout';
 import RichestList from '@/components/RichestList';
-import Script from 'next/script';
 import { useState } from 'react';
 
 export default function Home() {
@@ -16,7 +15,6 @@ export default function Home() {
 
   return (
     <Layout>
-      <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8216684138418325" crossOrigin="anonymous" />
       {/* Hero Section */}
       <section className="py-10 sm:py-16 bg-gradient-to-b from-egg-shell to-white">
         <div className="container-responsive text-center">
