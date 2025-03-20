@@ -14,6 +14,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 
 import { Line } from 'react-chartjs-2';
+import axios from 'axios';
 
 // Register Chart.js components
 ChartJS.register(
@@ -57,26 +58,36 @@ const HistoricalChart = ({ income = 50000 }: HistoricalChartProps) => {
     const fetchHistoricalPrices = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/eggprices');
+        setError(null);
         
-        if (!response.ok) {
-          throw new Error('Failed to fetch historical egg prices');
+        // Use axios instead of fetch for better error handling
+        const response = await axios.get('/api/eggprices');
+        
+        // Check if the response has the expected data structure
+        if (response.data && Array.isArray(response.data.data)) {
+          // Sort the data by year to ensure chronological order
+          const sortedData = [...response.data.data].sort((a, b) => {
+            return Number(a.year) - Number(b.year);
+          });
+          
+          setHistoricalData(sortedData);
+        } else {
+          throw new Error('Invalid data format received from API');
         }
-        
-        const result = await response.json();
-        setHistoricalData(result.data);
       } catch (err) {
+        console.error('Failed to load historical egg price data:', err);
         setError('Failed to load historical egg price data');
-        console.error(err);
+        
         // Fallback to sample data if API fails
         setHistoricalData([
-          { year: 1950, price: 0.06 },
-          { year: 1960, price: 0.08 },
-          { year: 1970, price: 0.09 },
           { year: 1980, price: 0.12 },
+          { year: 1985, price: 0.13 },
           { year: 1990, price: 0.15 },
+          { year: 1995, price: 0.16 },
           { year: 2000, price: 0.17 },
+          { year: 2005, price: 0.19 },
           { year: 2010, price: 0.21 },
+          { year: 2015, price: 0.22 },
           { year: 2020, price: 0.23 },
           { year: 2023, price: 0.25 },
         ]);
@@ -234,7 +245,7 @@ const HistoricalChart = ({ income = 50000 }: HistoricalChartProps) => {
         <Line ref={chartRef} options={chartOptions} data={chartData} />
       </div>
       <div className="mt-4 text-xs sm:text-sm text-gray-500 px-2">
-        <p>* Egg prices are approximate historical averages in the United States</p>
+        <p>* Egg prices are based on historical averages from the U.S. Bureau of Labor Statistics</p>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 {
-  "/api/eggprices/route": "app/api/eggprices/route.js",
+  "/not-found": "app/not-found.js",
+  "/api/billionaires/route": "app/api/billionaires/route.js",
   "/page": "app/page.js",
-  "/api/billionaires/route": "app/api/billionaires/route.js"
+  "/api/eggprices/route": "app/api/eggprices/route.js"
 }

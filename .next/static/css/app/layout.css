@@ -1161,6 +1161,10 @@ video {
 .font-semibold {
   font-weight: 600;
 }
+.text-amber-600 {
+  --tw-text-opacity: 1;
+  color: rgb(217 119 6 / var(--tw-text-opacity));
+}
 .text-egg-primary {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));

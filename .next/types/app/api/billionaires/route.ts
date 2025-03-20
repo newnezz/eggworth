@@ -1,4 +1,4 @@
-// File: /Users/michaelnunez/Desktop/eggworth/src/app/api/billionaires/route.ts
+// File: /Users/michaelnunez/eggworth-full/eggworth/src/app/api/billionaires/route.ts
 import * as entry from '../../../../../src/app/api/billionaires/route.js'
 import type { NextRequest } from 'next/server.js'
 
